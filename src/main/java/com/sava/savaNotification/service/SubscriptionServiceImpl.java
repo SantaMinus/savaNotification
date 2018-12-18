@@ -1,6 +1,7 @@
 package com.sava.savaNotification.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,12 +23,18 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public List<Subscription> getSubscriptions() {
+    public Map<String, List<Subscription>> getSubscriptions() {
         return dao.getAll();
     }
 
     @Override
-    public void setSubscription(Subscription subscription) {
-        dao.setSubscription(subscription);
+    public List<Subscription> getByUser(String userId) {
+        return dao.getByUser(userId);
+    }
+
+
+    @Override
+    public void setSubscription(String userId, Subscription subscription) {
+        dao.setSubscription(userId, subscription);
     }
 }

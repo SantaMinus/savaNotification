@@ -1,6 +1,7 @@
 package com.sava.savaNotification.service;
 
 import java.util.List;
+import java.util.Map;
 
 import nl.martijndwars.webpush.Subscription;
 
@@ -8,7 +9,9 @@ import nl.martijndwars.webpush.Subscription;
  * @author kateryna.savina
  */
 public interface SubscriptionService {
-    List<Subscription> getSubscriptions();
+    Map<String, List<Subscription>> getSubscriptions();
 
-    void setSubscription(Subscription subscription);
+    List<Subscription> getByUser(String userId);
+
+    void setSubscription(String userId, Subscription subscription);
 }
