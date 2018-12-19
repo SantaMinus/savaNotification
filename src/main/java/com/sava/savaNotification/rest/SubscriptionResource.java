@@ -1,8 +1,7 @@
 package com.sava.savaNotification.rest;
 
-import static javax.ws.rs.core.Response.Status.OK;
-
-import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,14 +30,12 @@ public class SubscriptionResource {
     }
 
     @PostMapping("{userId}")
-    public Response subscribe(@PathVariable String userId, @RequestBody Subscription subscription) {
+    public void subscribe(@PathVariable String userId, @RequestBody Subscription subscription) {
         service.setSubscription(userId, subscription);
-
-        return Response.status(OK).build();
     }
 
     @GetMapping
-    public Response getSubscriptions() {
-        return Response.status(OK).entity(service.getSubscriptions()).build();
+    public Map<String, List<Subscription>> getSubscriptions() {
+        return service.getSubscriptions();
     }
 }
