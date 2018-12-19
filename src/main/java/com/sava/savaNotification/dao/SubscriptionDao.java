@@ -13,5 +13,7 @@ public interface SubscriptionDao {
 
     List<Subscription> getByUser(String userId);
 
-    void setSubscription(String useId, Subscription sub);
+    void setSubscription(String userId, Subscription subscription);
+
+    void updateSubscription(String userId, Subscription subscription);
 }
