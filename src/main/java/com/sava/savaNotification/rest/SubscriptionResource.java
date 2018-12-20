@@ -20,7 +20,7 @@ import nl.martijndwars.webpush.Subscription;
  * @author kateryna.savina
  */
 @RestController
-@RequestMapping("subscription")
+@RequestMapping("/subscription")
 public class SubscriptionResource {
     private SubscriptionService service;
 
@@ -29,7 +29,7 @@ public class SubscriptionResource {
         this.service = subscriptionService;
     }
 
-    @PostMapping("{userId}")
+    @PostMapping("/{userId}")
     public void subscribe(@PathVariable String userId, @RequestBody Subscription subscription) {
         service.setSubscription(userId, subscription);
     }

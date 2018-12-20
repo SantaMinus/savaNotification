@@ -1,10 +1,16 @@
 package com.sava.savaNotification.service;
 
-import nl.martijndwars.webpush.Notification;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.concurrent.ExecutionException;
+
+import org.apache.http.HttpResponse;
+import org.jose4j.lang.JoseException;
 
 /**
  * @author kateryna.savina
  */
 public interface NotificationService {
-    Notification getNotification();
+    HttpResponse getNotification(String user)
+            throws InterruptedException, GeneralSecurityException, JoseException, ExecutionException, IOException;
 }
