@@ -29,6 +29,9 @@ public class NotificationResource {
     @GetMapping
     public void getNotification()
             throws InterruptedException, ExecutionException {
-        fcmClient.send(new HashMap<>());
+        HashMap<String, String> data = new HashMap<String, String>() {{
+            put("testKey", "testValue");
+        }};
+        fcmClient.send(data);
     }
 }

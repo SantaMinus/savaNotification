@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sava.savaNotification.fcm.FcmClient;
 import com.sava.savaNotification.service.SubscriptionService;
 
 import nl.martijndwars.webpush.Subscription;
@@ -23,10 +24,12 @@ import nl.martijndwars.webpush.Subscription;
 @RequestMapping("/subscription")
 public class SubscriptionResource {
     private SubscriptionService service;
+    private FcmClient fcmClient;
 
     @Autowired
-    public SubscriptionResource(SubscriptionService subscriptionService) {
+    public SubscriptionResource(SubscriptionService subscriptionService, FcmClient fcmClient) {
         this.service = subscriptionService;
+        this.fcmClient = fcmClient;
     }
 
     @PostMapping("/{userId}")
@@ -37,5 +40,10 @@ public class SubscriptionResource {
     @GetMapping
     public Map<String, List<Subscription>> getSubscriptions() {
         return service.getSubscriptions();
+    }
+
+    @PostMapping
+    public void subscribeTutorial(@RequestBody String token) {
+        fcmClient.subscribe("sava", token);
     }
 }
