@@ -1,11 +1,15 @@
 package com.sava.savaNotification.rest;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
+import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,12 +32,12 @@ public class NotificationResource {
         this.fcmClient = fcmClient;
     }
 
-    @GetMapping
-    public void getNotification()
-            throws InterruptedException, ExecutionException {
+    @GetMapping("/{userId}")
+    public void getNotification(@PathVariable String userId)
+            throws InterruptedException, ExecutionException, JoseException, GeneralSecurityException, IOException {
         HashMap<String, String> data = new HashMap<String, String>() {{
             put("testKey", "testValue");
         }};
-        fcmClient.send(data);
+        service.getNotification(userId);
     }
 }

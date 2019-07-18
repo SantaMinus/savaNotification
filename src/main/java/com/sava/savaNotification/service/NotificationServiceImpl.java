@@ -2,16 +2,16 @@ package com.sava.savaNotification.service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.security.Security;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpResponse;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.sava.savaNotification.vo.SubscriptionDTO;
 
 import nl.martijndwars.webpush.Notification;
 import nl.martijndwars.webpush.PushService;
@@ -25,6 +25,8 @@ public class NotificationServiceImpl implements NotificationService {
     Logger LOGGER = LoggerFactory.getLogger(NotificationServiceImpl.class);
     private SubscriptionService subscriptionService;
     private static final String PUBLIC_KEY = "AAAAcAqktmk:APA91bEvZpnvwumlxjdKUKaforTjREYGyY1CDBi7ohYkGDXD4IG5QqMQt6tal9LcTT055eqXmrSsK_EZ6fjFh6CBdsmZZx1oHIzjBntevcFeR85asYnHlDvHFgKkKrCrITVGNJi_bwjm";
+    private PushService webPush;
+    private static final int TTL = 255;
 
     @Autowired
     public NotificationServiceImpl(SubscriptionService subscriptionService) {
@@ -35,11 +37,56 @@ public class NotificationServiceImpl implements NotificationService {
     public HttpResponse getNotification(String user)
             throws InterruptedException, GeneralSecurityException, JoseException, ExecutionException, IOException {
         Subscription subscription = subscriptionService.getByUser(user).get(0);
+        SubscriptionDTO sub = new SubscriptionDTO(subscription);
 
-        Security.addProvider(new BouncyCastleProvider());
-        PushService pushService = new PushService();
-        Notification notification = new Notification(subscription, "sava");
+        return sendPushMessage(sub, "testSavaNotification");
+////        // FCM notifications
+//        Security.addProvider(new BouncyCastleProvider());
+////        PushService pushService = new PushService();
+////        Notification notification = new Notification(subscription, "sava");
+////
+////        return pushService.send(notification);
+//        Notification notification = new Notification(subscription, "testSavaNotification");
+//        webPush.send(notification);
+    }
 
+    public HttpResponse sendPushMessage(SubscriptionDTO sub, String payload) throws InterruptedException, GeneralSecurityException, JoseException, ExecutionException, IOException {
+
+        // Figure out if we should use GCM for this notification somehow
+        boolean useGcm = shouldUseGcm(sub);
+        Notification notification;
+        PushService pushService;
+
+        if (!useGcm) {
+            // Create a notification with the endpoint, userPublicKey from the subscription and a custom payload
+            notification = new Notification(
+                    sub.getEndpointUrl(),
+                    sub.getUserPublicKey(),
+                    sub.getAuthAsBytes(),
+                    payload.getBytes()
+            );
+
+            // Instantiate the push service, no need to use an API key for Push API
+            pushService = new PushService();
+        } else {
+            // Or create a GcmNotification, in case of Google Cloud Messaging
+            notification = new Notification(
+                    sub.getEndpointUrl(),
+                    sub.getUserPublicKey(),
+                    sub.getAuthAsBytes(),
+                    payload.getBytes(),
+                    TTL
+            );
+
+            // Instantiate the push service with a GCM API key
+            pushService = new PushService("gcm-api-key");
+        }
+
+        // Send the notification
         return pushService.send(notification);
+    }
+
+    private boolean shouldUseGcm(Subscription sub) {
+        return false;
     }
 }
