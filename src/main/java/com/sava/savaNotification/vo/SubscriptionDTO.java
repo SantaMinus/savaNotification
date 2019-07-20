@@ -67,7 +67,7 @@ public class SubscriptionDTO extends nl.martijndwars.webpush.Subscription {
      * Returns the base64 encoded public key string as a byte[]
      */
     public byte[] getKeyAsBytes() {
-        return Base64.getDecoder().decode(getKey());
+        return Base64.getDecoder().decode(getKey().getBytes());
     }
 
     public String getEndpointUrl() {
