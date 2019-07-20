@@ -11,6 +11,6 @@ import org.jose4j.lang.JoseException;
  * @author kateryna.savina
  */
 public interface NotificationService {
-    HttpResponse getNotification(String user)
-            throws InterruptedException, GeneralSecurityException, JoseException, ExecutionException, IOException;
+    HttpResponse getNotification(String user) throws InterruptedException, GeneralSecurityException, JoseException,
+            ExecutionException, IOException, ServiceException;
 }

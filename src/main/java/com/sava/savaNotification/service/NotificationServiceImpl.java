@@ -2,6 +2,7 @@ package com.sava.savaNotification.service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpResponse;
@@ -34,10 +35,13 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public HttpResponse getNotification(String user)
-            throws InterruptedException, GeneralSecurityException, JoseException, ExecutionException, IOException {
-        Subscription subscription = subscriptionService.getByUser(user).get(0);
-        SubscriptionDTO sub = new SubscriptionDTO(subscription);
+    public HttpResponse getNotification(String user) throws InterruptedException, GeneralSecurityException,
+            JoseException, ExecutionException, IOException, ServiceException {
+        List<Subscription> subscription = subscriptionService.getByUser(user);
+        if (subscription == null) {
+            throw new ServiceException(String.format("The user {} is not subscribed", user));
+        }
+        SubscriptionDTO sub = new SubscriptionDTO(subscription.get(0));
 
         return sendPushMessage(sub, "testSavaNotification");
 ////        // FCM notifications
@@ -50,7 +54,7 @@ public class NotificationServiceImpl implements NotificationService {
 //        webPush.send(notification);
     }
 
-    public HttpResponse sendPushMessage(SubscriptionDTO sub, String payload) throws InterruptedException, GeneralSecurityException, JoseException, ExecutionException, IOException {
+    private HttpResponse sendPushMessage(SubscriptionDTO sub, String payload) throws InterruptedException, GeneralSecurityException, JoseException, ExecutionException, IOException {
 
         // Figure out if we should use GCM for this notification somehow
         boolean useGcm = shouldUseGcm(sub);

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sava.savaNotification.fcm.FcmClient;
 import com.sava.savaNotification.service.NotificationService;
+import com.sava.savaNotification.service.ServiceException;
 
 /**
  * @author kateryna.savina
@@ -33,8 +34,8 @@ public class NotificationResource {
     }
 
     @GetMapping("/{userId}")
-    public void getNotification(@PathVariable String userId)
-            throws InterruptedException, ExecutionException, JoseException, GeneralSecurityException, IOException {
+    public void getNotification(@PathVariable String userId) throws InterruptedException, ExecutionException,
+            JoseException, GeneralSecurityException, IOException, ServiceException {
         HashMap<String, String> data = new HashMap<String, String>() {{
             put("testKey", "testValue");
         }};
