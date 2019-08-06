@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SavaNotificationApplication {
 
-    public static Logger LOGGER = LoggerFactory.getLogger(SavaNotificationApplication.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(SavaNotificationApplication.class);
 
     public static void main(String[] args) {
 		SpringApplication.run(SavaNotificationApplication.class, args);

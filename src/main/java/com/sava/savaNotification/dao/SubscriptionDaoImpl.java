@@ -27,6 +27,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
     private static Map<String, List<Subscription>> subscriptionMap = new HashMap<>();
 
     public SubscriptionDaoImpl() {
+        // temporarily not supported
     }
 
     @Override

@@ -23,10 +23,8 @@ import nl.martijndwars.webpush.Subscription;
  */
 @Service
 public class NotificationServiceImpl implements NotificationService {
-    Logger LOGGER = LoggerFactory.getLogger(NotificationServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NotificationServiceImpl.class);
     private SubscriptionService subscriptionService;
-    private static final String PUBLIC_KEY = "AAAAcAqktmk:APA91bEvZpnvwumlxjdKUKaforTjREYGyY1CDBi7ohYkGDXD4IG5QqMQt6tal9LcTT055eqXmrSsK_EZ6fjFh6CBdsmZZx1oHIzjBntevcFeR85asYnHlDvHFgKkKrCrITVGNJi_bwjm";
-    private static final int TTL = 255;
     private static final String WEB_PUSH_PRIVATE = "RVECh_zzCPqYP4341-orNGpFWfwE5LMIRmB2D8KGoDo=";
     private static final String WEB_PUSH_PUBLIC = "BJ9d0yTVFWzPhTk82J52ZNUZN_FBjkiEHSfDbGH4xpMsP2yxIqqk3PP77crU_k3en962b6YOYqpHGZpz5c5c6lc=";
 
@@ -45,42 +43,17 @@ public class NotificationServiceImpl implements NotificationService {
         SubscriptionDTO sub = new SubscriptionDTO(subscription.get(0));
 
         return sendPushMessage(sub, "testSavaNotification");
-////        // FCM notifications
-//        Security.addProvider(new BouncyCastleProvider());
-////        PushService pushService = new PushService();
-////        Notification notification = new Notification(subscription, "sava");
-////
-////        return pushService.send(notification);
-//        Notification notification = new Notification(subscription, "testSavaNotification");
-//        webPush.send(notification);
     }
 
     private HttpResponse sendPushMessage(SubscriptionDTO sub, String payload) throws InterruptedException, GeneralSecurityException, JoseException, ExecutionException, IOException {
-
-        // Figure out if we should use GCM for this notification somehow
-//        boolean useGcm = shouldUseGcm(sub);
         Notification notification;
         PushService pushService;
 
-//        if (!useGcm) {
         // Create a notification with the endpoint, userPublicKey from the subscription and a custom payload
         notification = new Notification(sub, payload);
 
         // Instantiate the push service, no need to use an API key for Push API
         pushService = new PushService();
-//        } else {
-//            // Or create a GcmNotification, in case of Google Cloud Messaging
-//            notification = new Notification(
-//                    sub.getEndpointUrl(),
-//                    sub.getUserPublicKey(),
-//                    sub.getAuthAsBytes(),
-//                    payload.getBytes(),
-//                    TTL
-//            );
-//
-//            // Instantiate the push service with a GCM API key
-//            pushService = new PushService("481214903913");
-//        }
 
         pushService.setPrivateKey(WEB_PUSH_PRIVATE);
         pushService.setPublicKey(WEB_PUSH_PUBLIC);
@@ -92,7 +65,4 @@ public class NotificationServiceImpl implements NotificationService {
         return pushService.send(notification);
     }
 
-    private boolean shouldUseGcm(Subscription sub) {
-        return false;
-    }
 }
