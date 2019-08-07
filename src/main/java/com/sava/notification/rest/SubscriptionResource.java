@@ -1,9 +1,9 @@
-package com.sava.savaNotification.rest;
+package com.sava.notification.rest;
 
 import java.util.List;
 import java.util.Map;
 
-import com.sava.savaNotification.service.SubscriptionService;
+import com.sava.notification.service.SubscriptionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;

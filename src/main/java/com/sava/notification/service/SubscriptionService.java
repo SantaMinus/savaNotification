@@ -1,4 +1,4 @@
-package com.sava.savaNotification.service;
+package com.sava.notification.service;
 
 import java.util.List;
 import java.util.Map;

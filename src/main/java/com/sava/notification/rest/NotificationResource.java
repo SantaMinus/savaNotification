@@ -1,11 +1,11 @@
-package com.sava.savaNotification.rest;
+package com.sava.notification.rest;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.concurrent.ExecutionException;
 
-import com.sava.savaNotification.service.NotificationService;
-import com.sava.savaNotification.service.ServiceException;
+import com.sava.notification.service.NotificationService;
+import com.sava.notification.service.ServiceException;
 
 import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;

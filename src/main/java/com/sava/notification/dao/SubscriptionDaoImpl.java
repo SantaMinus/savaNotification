@@ -1,4 +1,4 @@
-package com.sava.savaNotification.dao;
+package com.sava.notification.dao;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +18,7 @@ import nl.martijndwars.webpush.Subscription;
  */
 @Repository
 public class SubscriptionDaoImpl implements SubscriptionDao {
-    private Logger LOGGER = LoggerFactory.getLogger(SubscriptionDaoImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionDaoImpl.class);
 
     /**
      * provided to speed up the development :) Should be changed to a real DB in future

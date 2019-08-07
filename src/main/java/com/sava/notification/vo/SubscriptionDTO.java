@@ -1,4 +1,4 @@
-package com.sava.savaNotification.vo;
+package com.sava.notification.vo;
 
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;

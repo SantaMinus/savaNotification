@@ -1,4 +1,4 @@
-package com.sava.savaNotification;
+package com.sava.notification;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

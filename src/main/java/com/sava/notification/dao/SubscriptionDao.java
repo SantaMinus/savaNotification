@@ -1,4 +1,4 @@
-package com.sava.savaNotification.dao;
+package com.sava.notification.dao;
 
 import java.util.List;
 import java.util.Map;

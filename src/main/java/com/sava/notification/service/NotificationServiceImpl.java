@@ -1,4 +1,4 @@
-package com.sava.savaNotification.service;
+package com.sava.notification.service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sava.savaNotification.vo.SubscriptionDTO;
+import com.sava.notification.vo.SubscriptionDTO;
 
 import nl.martijndwars.webpush.Notification;
 import nl.martijndwars.webpush.PushService;
@@ -38,11 +38,24 @@ public class NotificationServiceImpl implements NotificationService {
             JoseException, ExecutionException, IOException, ServiceException {
         List<Subscription> subscription = subscriptionService.getByUser(user);
         if (subscription == null) {
-            throw new ServiceException(String.format("The user {} is not subscribed", user));
+            throw new ServiceException(String.format("The user %s is not subscribed", user));
         }
         SubscriptionDTO sub = new SubscriptionDTO(subscription.get(0));
 
-        return sendPushMessage(sub, "testSavaNotification");
+        return sendPushMessage(sub, "{\n" +
+                "  \"notification\": {\n" +
+                "    \"title\": \"Title\",\n" +
+                "    \"body\": \"I am a body\",\n" +
+                "    \"data\": \"\",\n" +
+                "    \"actions\": [{\n" +
+                "      \"action\": \"Do this!\",\n" +
+                "      \"title\": \"Do this!\"\n" +
+                "    }, {\n" +
+                "      \"action\": \"Do that!\",\n" +
+                "      \"title\": \"Do that!\"\n" +
+                "    }]\n" +
+                "  }\n" +
+                "}");
     }
 
     private HttpResponse sendPushMessage(SubscriptionDTO sub, String payload) throws InterruptedException, GeneralSecurityException, JoseException, ExecutionException, IOException {
@@ -57,7 +70,6 @@ public class NotificationServiceImpl implements NotificationService {
 
         pushService.setPrivateKey(WEB_PUSH_PRIVATE);
         pushService.setPublicKey(WEB_PUSH_PUBLIC);
-        pushService.setGcmApiKey("481214903913");
 
         LOGGER.debug("PushService: {}; privateKey: {}, publicKey: {}", pushService, pushService.getPrivateKey(), pushService.getPublicKey());
 
